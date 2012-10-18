@@ -62,6 +62,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._statusBar = new System.Windows.Forms.StatusStrip();
             this._nShapeDisplay = new Dataweb.NShape.WinFormsUI.Display();
+            this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._menuBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,6 +113,7 @@
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
@@ -329,6 +331,10 @@
             this._nShapeDisplay.ToolPreviewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(119)))), ((int)(((byte)(136)))), ((int)(((byte)(153)))));
             this._nShapeDisplay.ToolPreviewColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
             // 
+            // _openFileDialog
+            // 
+            this._openFileDialog.Filter = ".NET Assemblies|*.dll;*.exe";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,6 +387,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.StatusStrip _statusBar;
         private Dataweb.NShape.WinFormsUI.Display _nShapeDisplay;
+        private System.Windows.Forms.OpenFileDialog _openFileDialog;
 
     }
 }
