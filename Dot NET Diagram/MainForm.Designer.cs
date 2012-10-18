@@ -63,7 +63,9 @@
             this._statusBar = new System.Windows.Forms.StatusStrip();
             this._nShapeDisplay = new Dataweb.NShape.WinFormsUI.Display();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this._toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this._menuBar.SuspendLayout();
+            this._statusBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // _menuBar
@@ -304,6 +306,8 @@
             // 
             // _statusBar
             // 
+            this._statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._toolStripStatusLabel});
             this._statusBar.Location = new System.Drawing.Point(0, 540);
             this._statusBar.Name = "_statusBar";
             this._statusBar.Size = new System.Drawing.Size(784, 22);
@@ -335,6 +339,11 @@
             // 
             this._openFileDialog.Filter = ".NET Assemblies|*.dll;*.exe";
             // 
+            // _toolStripStatusLabel
+            // 
+            this._toolStripStatusLabel.Name = "_toolStripStatusLabel";
+            this._toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,6 +357,8 @@
             this.Text = ".NET Diagram";
             this._menuBar.ResumeLayout(false);
             this._menuBar.PerformLayout();
+            this._statusBar.ResumeLayout(false);
+            this._statusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,6 +399,7 @@
         private System.Windows.Forms.StatusStrip _statusBar;
         private Dataweb.NShape.WinFormsUI.Display _nShapeDisplay;
         private System.Windows.Forms.OpenFileDialog _openFileDialog;
+        private System.Windows.Forms.ToolStripStatusLabel _toolStripStatusLabel;
 
     }
 }
