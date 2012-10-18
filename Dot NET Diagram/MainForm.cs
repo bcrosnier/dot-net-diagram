@@ -15,5 +15,10 @@ namespace Dot_NET_Diagram
         {
             InitializeComponent();
         }
+
+        private void openToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+
+        }
     }
 }

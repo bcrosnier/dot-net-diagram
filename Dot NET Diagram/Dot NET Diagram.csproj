@@ -47,8 +47,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dataweb.NShape, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c" />
+    <Reference Include="Dataweb.NShape.WinFormsUI, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
