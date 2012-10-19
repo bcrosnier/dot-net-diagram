@@ -13,6 +13,9 @@ namespace Dot_NET_Diagram
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// The assembly loaded in the form. Null on empty.
+        /// </summary>
         private Assembly _loadedAssembly;
 
         public MainForm()
@@ -22,6 +25,9 @@ namespace Dot_NET_Diagram
             _loadedAssembly = null;
         }
 
+        /// <summary>
+        /// "Open" menu item. Used to open an assembly file.
+        /// </summary>
         private void openToolStripMenuItem_Click( object sender, EventArgs e )
         {
             if ( _openFileDialog.ShowDialog() == DialogResult.OK )
@@ -33,13 +39,22 @@ namespace Dot_NET_Diagram
                         string filename = _openFileDialog.FileName;
                         _loadedAssembly = Assembly.LoadFile( filename );
                         _toolStripStatusLabel.Text = "Opened " + filename + ".";
+
                     }
                 }
                 catch ( Exception ex )
                 {
-                    MessageBox.Show( "Error: Could not read file from disk. Original error: " + ex.Message );
+                    MessageBox.Show( "Error: Could not read file from disk.\n" + ex.Message );
                 }
             }
+        }
+
+        /// <summary>
+        /// "Exit" menu item. Close form, and exit application.
+        /// </summary>
+        private void exitToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            this.Close();
         }
     }
 }
