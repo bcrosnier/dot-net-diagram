@@ -10,6 +10,7 @@ using Dataweb.NShape;
 using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
 using System.IO;
+using System.Reflection;
 
 namespace Dot_NET_Diagram
 {
@@ -28,23 +29,18 @@ namespace Dot_NET_Diagram
             _xmlStore.FileExtension = ".nspj";
             
             _NShapeProject.Name = ".NET Diagram";
-            _NShapeProject.LibrarySearchPaths.Add( Path.Combine( System.IO.Path.GetDirectoryName( Application.ExecutablePath ), @"lib" ) );
-            _NShapeProject.AutoLoadLibraries = true;
-            _NShapeProject.AddLibraryByName( "Dataweb.NShape.GeneralShapes", true );
-
+            _NShapeProject.AddLibrary( typeof( Ellipse ).Assembly, false );
+            _NShapeProject.Create();
 
             _NShapeDiagram = new Diagram( "diagram" );
             _NShapeDiagram.Height = _NShapeDisplay.Height;
             _NShapeDiagram.Width = _NShapeDisplay.Width;
 
-            _NShapeProject.Create();
-            
-            /* Test display */
+            /* Test shape display */
             RectangleBase shape = (RectangleBase)_NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
 
             shape.Width = 100;
             shape.Height = 100;
-
             shape.X = 50;
             shape.Y = 50;
             shape.SetCaptionText( 0, "Hello world" );
@@ -53,6 +49,23 @@ namespace Dot_NET_Diagram
             /* End of display */
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
+        }
+
+        private void _NShapeDisplay_Layout( object sender, LayoutEventArgs e )
+        {
+            //MessageBox.Show( "Hi" );
+
+            _NShapeDiagram.Height = _NShapeDisplay.Height - 100;
+            _NShapeDiagram.Width = _NShapeDisplay.Width - 100;
+        }
+
+        public void loadAssembly( Assembly assembly )
+        {
+            /**
+             * INSERT INTELLIGENCE HERE
+             * */
+
+            MessageBox.Show( "Assembly loaded!\n" + assembly.GetName() + "\n" + assembly.FullName );
         }
     }
 }

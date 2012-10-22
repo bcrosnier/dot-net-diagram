@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagramDisplayControl));
-            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager4 = new Dataweb.NShape.RoleBasedSecurityManager();
+            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager1 = new Dataweb.NShape.RoleBasedSecurityManager();
             this._NShapeDisplay = new Dataweb.NShape.WinFormsUI.Display();
             this._DiagramSetController = new Dataweb.NShape.Controllers.DiagramSetController();
             this._NShapeProject = new Dataweb.NShape.Project(this.components);
@@ -40,8 +40,8 @@
             // 
             // _NShapeDisplay
             // 
-            this._NShapeDisplay.AllowDrop = true;
             this._NShapeDisplay.BackColorGradient = System.Drawing.SystemColors.Control;
+            this._NShapeDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._NShapeDisplay.DiagramSetController = this._DiagramSetController;
             this._NShapeDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this._NShapeDisplay.GridColor = System.Drawing.Color.Gainsboro;
@@ -58,6 +58,7 @@
             this._NShapeDisplay.TabIndex = 0;
             this._NShapeDisplay.ToolPreviewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(119)))), ((int)(((byte)(136)))), ((int)(((byte)(153)))));
             this._NShapeDisplay.ToolPreviewColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this._NShapeDisplay.Layout += new System.Windows.Forms.LayoutEventHandler(this._NShapeDisplay_Layout);
             // 
             // _DiagramSetController
             // 
@@ -69,9 +70,9 @@
             this._NShapeProject.LibrarySearchPaths = ((System.Collections.Generic.IList<string>)(resources.GetObject("_NShapeProject.LibrarySearchPaths")));
             this._NShapeProject.Name = null;
             this._NShapeProject.Repository = this._CachedRepository;
-            roleBasedSecurityManager4.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
-            roleBasedSecurityManager4.CurrentRoleName = "Administrator";
-            this._NShapeProject.SecurityManager = roleBasedSecurityManager4;
+            roleBasedSecurityManager1.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
+            roleBasedSecurityManager1.CurrentRoleName = "Administrator";
+            this._NShapeProject.SecurityManager = roleBasedSecurityManager1;
             // 
             // _CachedRepository
             // 
@@ -90,7 +91,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this._NShapeDisplay);
             this.Name = "DiagramDisplayControl";
             this.Size = new System.Drawing.Size(500, 500);

@@ -103,6 +103,7 @@
             // 
             // _diagramDisplayControl
             // 
+            this._diagramDisplayControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._diagramDisplayControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._diagramDisplayControl.Location = new System.Drawing.Point(0, 24);
             this._diagramDisplayControl.Name = "_diagramDisplayControl";
