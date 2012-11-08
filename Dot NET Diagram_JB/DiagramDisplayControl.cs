@@ -12,6 +12,7 @@ using Dataweb.NShape.GeneralShapes;
 using System.IO;
 using System.Reflection;
 
+
 namespace Dot_NET_Diagram
 {
     /// <summary>
@@ -36,7 +37,8 @@ namespace Dot_NET_Diagram
             _NShapeDiagram.Height = _NShapeDisplay.Height;
             _NShapeDiagram.Width = _NShapeDisplay.Width;
 
-            /* Test shape display */
+            /* Test shape display 
+            
             RectangleBase shape = (RectangleBase)_NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
             shape.Width = 100;
             shape.Height = 100;
@@ -44,17 +46,18 @@ namespace Dot_NET_Diagram
             shape.Y = 100;
             shape.SetCaptionText(0, "Hello World");
 
+
             _NShapeDiagram.Shapes.Add(shape);
             
          
-            /* End of display */
+             End of display */
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
         }
 
         private void _NShapeDisplay_Layout( object sender, LayoutEventArgs e )
         {
-            //MessageBox.Show( "Hi" );
+           // MessageBox.Show( "Hi" );
 
             _NShapeDiagram.Height = _NShapeDisplay.Height - 100;
             _NShapeDiagram.Width = _NShapeDisplay.Width - 100;
@@ -65,13 +68,74 @@ namespace Dot_NET_Diagram
             /**
              * INSERT INTELLIGENCE HERE
              * */
-
+            DllReader test = new DllReader(assembly.Location);
+            List<DescriptionClass> listClass = DescriptionClass.PutTypeInList(test);
             MessageBox.Show( "Assembly loaded!\n" + assembly.GetName() + "\n" + assembly.FullName );
+            int i = 50;
+            int j = 50;
+            int jbis;
+            foreach (DescriptionClass dc in listClass)
+            {
+                if (dc.IsAnInterface())
+                    DrawInterfaceShape(dc.GetName(), i, j);
+                else
+                {
+                    List<MemberInfo> MemberI = dc.GetListMember();
+                    jbis = 50;
+                    DrawClassShape(dc.GetName(), i, j);
+                    foreach (MemberInfo mi in MemberI)
+                    {
+                        DrawMemberClass(mi.Name, i, j + jbis);
+                        jbis += 50;
+                    }
+                }
+                j += 100;
+                i += 100;
+            }
         }
 
         private void _NShapeDisplay_Load(object sender, EventArgs e)
         {
 
+        }
+
+        public void DrawClassShape(string s, int x, int y)
+        {
+            RectangleBase shape = (RectangleBase)_NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
+            shape.Width = 100;
+            shape.Height = 100;
+            shape.X = x;
+            shape.Y = y;
+            shape.SetCaptionText(0, s);
+
+
+            _NShapeDiagram.Shapes.Add(shape);
+        }
+
+        public void DrawInterfaceShape(string s, int x, int y)
+        {
+            RectangleBase shape = (RectangleBase)_NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
+            shape.Width = 100;
+            shape.Height = 50;
+            shape.X = x;
+            shape.Y = y;
+            shape.SetCaptionText(0, s);
+
+
+            _NShapeDiagram.Shapes.Add(shape);
+        }
+
+        public void DrawMemberClass(string s, int x, int y)
+        {
+            RectangleBase shape = (RectangleBase)_NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
+            shape.Width = 100;
+            shape.Height = 50;
+            shape.X = x;
+            shape.Y = y;
+            shape.SetCaptionText(0, s);
+
+
+            _NShapeDiagram.Shapes.Add(shape);
         }
     }
 }
