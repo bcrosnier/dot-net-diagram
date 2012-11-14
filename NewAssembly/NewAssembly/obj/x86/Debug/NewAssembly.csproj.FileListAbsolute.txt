@@ -1,5 +1,0 @@
-c:\users\jb\documents\visual studio 2010\Projects\NewAssembly\NewAssembly\bin\Debug\NewAssembly.exe
-c:\users\jb\documents\visual studio 2010\Projects\NewAssembly\NewAssembly\bin\Debug\NewAssembly.pdb
-c:\users\jb\documents\visual studio 2010\Projects\NewAssembly\NewAssembly\obj\x86\Debug\ResolveAssemblyReference.cache
-c:\users\jb\documents\visual studio 2010\Projects\NewAssembly\NewAssembly\obj\x86\Debug\NewAssembly.exe
-c:\users\jb\documents\visual studio 2010\Projects\NewAssembly\NewAssembly\obj\x86\Debug\NewAssembly.pdb

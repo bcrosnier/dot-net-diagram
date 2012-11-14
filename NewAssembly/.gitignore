@@ -1,0 +1,7 @@
+# Build Folders
+NewAssembly/bin
+NewAssembly/obj
+
+# User settings & files
+*.csproj.user
+*.suo
