@@ -21,9 +21,10 @@ namespace NewAssembly
             return typeAssembly;
         }
 
+//Récupére les classes mères
         public List<Type> SearchSubClass(Type type)
         {
-            Console.WriteLine("Recherche de classe mère pour la classe {0}", type.Name);
+            Console.WriteLine("\nRecherche de classe mère pour la classe {0}", type.Name);
             List<Type> subClasses = new List<Type>();
             subClasses.Add(type);
             foreach (Type currentType in _currentDll.GetTypes())
@@ -34,24 +35,21 @@ namespace NewAssembly
             return subClasses;
         }
 
+//Récupére les interfaces
         public List<Type> SearchInterface(Type type)
         {
-            Console.WriteLine("\nRécupération des inerfaces de la classe {0}", type.Name);
+            Console.WriteLine("\nRécupération des interfaces de la classe {0}", type.Name);
             return type.GetInterfaces().ToList<Type>();
         }
 
+//Recherche des classes et interfaces implémentées par le type principal
         public List<Type> GetSubClassAndI(Type type)
         {
             List<Type> subClasses = SearchSubClass(type);
             List<Type> interfaces = SearchInterface(type);
             subClasses.AddRange(interfaces);
+            subClasses.Remove(type);
             return subClasses;
-        }
-
-        public List<MemberInfo> ShowMembers(Type type)
-        {
-            Console.WriteLine("\nRecupération des membres: ");
-            return type.GetMembers().ToList<MemberInfo>();
         }
     }
 }

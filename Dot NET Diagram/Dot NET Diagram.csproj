@@ -66,12 +66,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DescriptionClass.cs" />
     <Compile Include="DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DiagramDisplayControl.Designer.cs">
       <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DllReader.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

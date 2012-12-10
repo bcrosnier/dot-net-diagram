@@ -1,7 +1,0 @@
-# Build Folders
-bin
-obj
-
-# User settings & files
-*.csproj.user
-*.suo

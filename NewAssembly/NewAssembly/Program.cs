@@ -9,7 +9,7 @@ namespace NewAssembly
     {
         static void Main(string[] args)
         {
-            DllReader test = new DllReader("ClassLibrary1.dll");
+            DllReader test = new DllReader("GridMapper.exe");
             DescriptionClass dClass;
             List<DescriptionClass> allClasses = new List<DescriptionClass>();
             Type[] typeAssembly = test.GetAllTypes();
@@ -21,7 +21,7 @@ namespace NewAssembly
             }
             foreach (DescriptionClass dc in allClasses)
                 dc.printClass();
-      
+                     
         }
     }
 }
