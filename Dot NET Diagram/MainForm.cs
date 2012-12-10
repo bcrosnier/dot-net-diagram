@@ -14,7 +14,7 @@ namespace Dot_NET_Diagram
 
     public partial class MainForm : Form
     {
-        
+
         /// <summary>
         /// The assembly loaded in the form. Null on empty.
         /// </summary>
@@ -29,21 +29,21 @@ namespace Dot_NET_Diagram
 
             this.AllowDrop = true;
             this.DragDrop += new System.Windows.Forms.DragEventHandler( this._OnDragDrop );
-            this.DragEnter += new System.Windows.Forms.DragEventHandler( this._OnDragEnter );       
+            this.DragEnter += new System.Windows.Forms.DragEventHandler( this._OnDragEnter );
         }
 
         /// <summary>
         /// Show console.
         /// </summary>
         /// <returns></returns>
-        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
-        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        [System.Runtime.InteropServices.DllImport( "kernel32.dll", SetLastError = true )]
+        [return: System.Runtime.InteropServices.MarshalAs( System.Runtime.InteropServices.UnmanagedType.Bool )]
         private static extern bool AllocConsole();
 
         /// <summary>
         /// Create and allocate a console, as defined above.
         /// </summary>
-        [System.Diagnostics.ConditionalAttribute("DEBUG")]
+        [System.Diagnostics.ConditionalAttribute( "DEBUG" )]
         private void InitConsole()
         {
             AllocConsole();
@@ -53,10 +53,10 @@ namespace Dot_NET_Diagram
         /// Log to console in debug mode.
         /// </summary>
         /// <param name="str">String to log</param>
-        [System.Diagnostics.ConditionalAttribute("DEBUG")]
-        public static void LogOnDebug(string str)
+        [System.Diagnostics.ConditionalAttribute( "DEBUG" )]
+        public static void LogOnDebug( string str )
         {
-            Console.WriteLine(str);
+            Console.WriteLine( str );
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Dot_NET_Diagram
                 }
                 catch ( Exception ex )
                 {
-                    MessageBox.Show( "Error: Could not read file from disk.\n" + ex.Message );
+                    MessageBox.Show( "Error: Could not read file from disk:\n" + ex.Message );
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Dot_NET_Diagram
 
         private void _OnDragDrop( object sender, DragEventArgs e )
         {
-            string[] files = (string[])e.Data.GetData( DataFormats.FileDrop );
+            string[] files = (string[]) e.Data.GetData( DataFormats.FileDrop );
             foreach ( string filename in files )
             {
                 _toolStripStatusLabel.Text = "Opening " + filename + ".";
@@ -115,12 +115,23 @@ namespace Dot_NET_Diagram
                 try
                 {
                     _loadedAssembly = Assembly.LoadFile( filename );
-                    _toolStripStatusLabel.Text = "Opened " + filename + ".";
+                }
+                catch ( Exception ex )
+                {
+                    // Couldn't load file.                   
+                    MessageBox.Show( "Could not file " + filename + ": " + ex.Message, "Open failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
+
+                _toolStripStatusLabel.Text = "Opened " + filename + ".";
+
+                try
+                {
+                    // Couldn't load assembly.
                     _diagramDisplayControl.loadAssembly( _loadedAssembly );
                 }
                 catch ( Exception ex )
                 {
-                    MessageBox.Show( "Could not load " + filename + ": " + ex.Message, "Open failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show( "Could not load assembly from " + filename + ": " + ex.Message, "Loading failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
                     _toolStripStatusLabel.Text = "Could not load " + filename + ": " + ex.Message;
                 }
             }
@@ -130,7 +141,7 @@ namespace Dot_NET_Diagram
             }
         }
 
-        private void _diagramDisplayControl_Load(object sender, EventArgs e)
+        private void _diagramDisplayControl_Load( object sender, EventArgs e )
         {
 
         }
