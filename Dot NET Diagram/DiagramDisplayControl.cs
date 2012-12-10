@@ -45,8 +45,7 @@ namespace Dot_NET_Diagram
             shape.SetCaptionText(0, "Hello World");
 
             _NShapeDiagram.Shapes.Add(shape);
-            
-         
+    
             /* End of display */
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
