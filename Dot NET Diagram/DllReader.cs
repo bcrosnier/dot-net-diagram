@@ -17,7 +17,7 @@ namespace Dot_NET_Diagram
 
         public Type[] GetAllTypes()
         {
-            Console.WriteLine("\nRécupération des types: ");
+            MainForm.LogOnDebug("\nRécupération des types: ");
             Type[] typeAssembly = _currentDll.GetTypes();
             return typeAssembly;
         }
@@ -25,7 +25,7 @@ namespace Dot_NET_Diagram
 
         public List<Type> SearchSubClass(Type type)
         {
-            Console.WriteLine("Recherche de classe mère pour la classe {0}", type.Name);
+            MainForm.LogOnDebug(String.Format("Recherche de classe mère pour la classe {0}", type.Name));
             List<Type> subClasses = new List<Type>();
             subClasses.Add(type);
             foreach (Type currentType in _currentDll.GetTypes())
@@ -39,7 +39,7 @@ namespace Dot_NET_Diagram
 
         public List<Type> SearchInterface(Type type)
         {
-            Console.WriteLine("\nRécupération des inerfaces de la classe {0}", type.Name);
+            MainForm.LogOnDebug(String.Format("\nRécupération des interfaces de la classe {0}", type.Name));
             return type.GetInterfaces().ToList<Type>();
         }
 

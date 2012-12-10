@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace Dot_NET_Diagram
 {
+
     public partial class MainForm : Form
     {
+        
         /// <summary>
         /// The assembly loaded in the form. Null on empty.
         /// </summary>
@@ -23,9 +25,38 @@ namespace Dot_NET_Diagram
             InitializeComponent();
             _loadedAssembly = null;
 
+            InitConsole();
+
             this.AllowDrop = true;
             this.DragDrop += new System.Windows.Forms.DragEventHandler( this._OnDragDrop );
             this.DragEnter += new System.Windows.Forms.DragEventHandler( this._OnDragEnter );       
+        }
+
+        /// <summary>
+        /// Show console.
+        /// </summary>
+        /// <returns></returns>
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        private static extern bool AllocConsole();
+
+        /// <summary>
+        /// Create and allocate a console, as defined above.
+        /// </summary>
+        [System.Diagnostics.ConditionalAttribute("DEBUG")]
+        private void InitConsole()
+        {
+            AllocConsole();
+        }
+
+        /// <summary>
+        /// Log to console in debug mode.
+        /// </summary>
+        /// <param name="str">String to log</param>
+        [System.Diagnostics.ConditionalAttribute("DEBUG")]
+        public static void LogOnDebug(string str)
+        {
+            Console.WriteLine(str);
         }
 
         /// <summary>
