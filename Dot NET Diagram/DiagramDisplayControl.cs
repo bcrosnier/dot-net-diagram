@@ -52,73 +52,116 @@ namespace Dot_NET_Diagram
 
         public void loadAssembly( Assembly assembly )
         {
-            /***********placer les classes sur le display***********************/
+/********************Algorithme de placement *********************************/
             DllReader test = new DllReader( assembly.Location );
-
-            //MessageBox.Show( "Assembly loaded!\n" + assembly.GetName() + "\n" + assembly.FullName );
-
             Dictionary<String, CaptionedShapeBase> shapeDict = new Dictionary<String, CaptionedShapeBase>();
-            List<DescriptionClass> classList;
-
+/**********Interfaces**************/
             int x = 100;
             int y = 100;
 
-            IEnumerable<DescriptionClass> requete = from dc in DescriptionClass.PutTypeInList( test )
-                                                    orderby CountSubClass( dc )
+            IEnumerable<DescriptionClass> requete = from dc in PutInterfaceInList(test)
+                                                    orderby CountNbTimeCall(dc._mainType, test)
                                                     select dc;
-            classList = requete.ToList<DescriptionClass>();
-            classList.Reverse( 0, classList.Count );
-            DescriptionClass currentDc = null;
-            int index = 0;
-            int unblock = 0;
-            while ( classList.Count != 0 )
+            List<DescriptionClass> interfaceList = requete.ToList<DescriptionClass>();
+            int index=0;
+          
+            while (index != interfaceList.Count)
             {
-                currentDc = classList.ElementAt( 0 );
-                if ( currentDc.IsAnInterface() )
-                    DrawInterfaceShape( currentDc.GetName(), x, y, shapeDict );
-
-                else
-                    DrawClassShape( currentDc.GetName(), x, y, shapeDict );
-                y += 200;
-                classList.RemoveAt( 0 );
-
-                foreach ( Type type in currentDc.SortListType( currentDc._subClasses, currentDc._mainType ) )
+                if (interfaceList.ElementAt(index)._subClasses.Count == 0)
                 {
-                    unblock = 0;
-                    index = 0;
-
-                    if ( classList.Count == 0 )
-                        break;
-                    foreach ( DescriptionClass dc in classList )
-                    {
-
-                        if ( dc.GetName() == type.Name )
-                        {
-                            if ( dc.IsAnInterface() )
-                                DrawInterfaceShape( dc.GetName(), x, y, shapeDict );
-
-                            else
-                                DrawClassShape( dc.GetName(), x, y, shapeDict );
-
-                            x += 200;
-                            unblock = 1;
-                            break;
-                        }
-                        index++;
-                    }
-                    if ( unblock == 1 )
-                        classList.RemoveAt( index );
+                    DrawInterfaceShape(interfaceList.ElementAt(index).GetName(), x, y, shapeDict);
+                    interfaceList.RemoveAt(index);
+                    index--;
+                    x += 200;
                 }
-                y += 200;
-                x = 100;
+                
+                index++;
+            }
+            y += 400;
+            x=100;
+            index = 0;
+            while (index != interfaceList.Count)
+            {
+                if (CountNbTimeCall(interfaceList.ElementAt(index)._mainType, test) == 0)
+                {
+                    DrawInterfaceShape(interfaceList.ElementAt(index).GetName(), x, y, shapeDict);
+                    interfaceList.RemoveAt(index);
+                    index--;
+                    x += 200;
+                }
+               
+                index++;
+            }
+            y -= 200;
+            x = 600;
+
+            foreach (DescriptionClass dc in interfaceList)
+            {
+                DrawInterfaceShape(dc.GetName(), x, y, shapeDict);
+                x += 200;
             }
 
-            /*****************Dessiner les relations****************************/
-            foreach ( DescriptionClass dc in DescriptionClass.PutTypeInList( test ) )
-                foreach ( Type type in dc.SortListType( dc._subClasses, dc._mainType ) )
+            foreach (DescriptionClass dc in PutInterfaceInList(test))
+                foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
                 {
-                    DrawRelation( type.Name, dc.GetName(), shapeDict );
+                    DrawRelationInterface(type.Name, dc.GetName(), shapeDict);
                 }
+
+/************Classes***********************/          
+
+            
+
+            x = 0;
+            y = 800;
+           requete = from dc in PutClassInList(test)
+                                                    orderby CountNbTimeCall(dc._mainType, test)
+                                                    select dc;
+            List<DescriptionClass> classList = requete.ToList<DescriptionClass>();
+            index = 0;
+
+            while (index != classList.Count)
+            {
+                if (classList.ElementAt(index)._subClasses.Count == 0)
+                {
+                    DrawClassShape(classList.ElementAt(index).GetName(), x, y, shapeDict);
+                    classList.RemoveAt(index);
+                    index--;
+                    x += 200;
+                }
+
+                index++;
+            }
+            y += 400;
+            x = 100;
+            index = 0;
+            while (index != classList.Count)
+            {
+                if (CountNbTimeCall(classList.ElementAt(index)._mainType, test) == 0)
+                {
+                    DrawClassShape(classList.ElementAt(index).GetName(), x, y, shapeDict);
+                    classList.RemoveAt(index);
+                    index--;
+                    x += 200;
+                }
+
+                index++;
+            }
+            y -= 200;
+            x = 600;
+
+            foreach (DescriptionClass dc in classList)
+            {
+                DrawClassShape(dc.GetName(), x, y, shapeDict);
+                x += 200;
+            }
+
+            foreach (DescriptionClass dc in PutClassInList(test))
+                foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
+                {
+                    DrawRelation(type.Name, dc.GetName(), shapeDict);
+                }
+            
+          
         }
 
         private void _NShapeDisplay_Load( object sender, EventArgs e )
@@ -132,6 +175,21 @@ namespace Dot_NET_Diagram
             foreach ( Type type in dc.SortListType( dc._subClasses, dc._mainType ) )
             {
                 counter++;
+            }
+            return counter;
+        }
+
+        public int CountNbTimeCall(Type type, DllReader test)
+        {
+            int counter = 0;
+            foreach (DescriptionClass dc in DescriptionClass.PutTypeInList(test))
+            {
+                if (!dc._mainType.IsInterface)
+                {
+                    foreach (Type t in dc._subClasses)
+                        if (t == type)
+                            counter++;
+                }           
             }
             return counter;
         }
@@ -214,5 +272,70 @@ namespace Dot_NET_Diagram
             _NShapeDiagram.Shapes.Add( arrow );
         }
 
+        public void DrawRelationNested(string class1Name, string class2Name, Dictionary<string, CaptionedShapeBase> shapeDictionary)
+        {
+            LineShapeBase line = (LineShapeBase)_NShapeProject.ShapeTypes["Polyline"].CreateInstance();
+            ThickArrow arrow = (ThickArrow)_NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
+
+            line.Connect(ControlPointId.FirstVertex, shapeDictionary[class1Name], ControlPointId.Reference);
+            line.Connect(ControlPointId.LastVertex, shapeDictionary[class2Name], ControlPointId.Reference);
+
+            ColorStyle myColorStyle = new ColorStyle("test", System.Drawing.Color.Red);
+            ColorStyle mySecondColorStyle = new ColorStyle("test", System.Drawing.Color.White);
+            FillStyle myFillStyle = new FillStyle("test", myColorStyle, mySecondColorStyle);
+            arrow.FillStyle = myFillStyle;
+
+            arrow.MoveControlPointTo(1, line.GetControlPointPosition(ControlPointId.FirstVertex).X,
+                                    line.GetControlPointPosition(ControlPointId.FirstVertex).Y, 0);
+            arrow.MoveControlPointTo(6, line.GetControlPointPosition(ControlPointId.LastVertex).X,
+                                    line.GetControlPointPosition(ControlPointId.LastVertex).Y, 0);
+
+            _NShapeDiagram.Shapes.Add(arrow);
+            
+        }
+
+        public void DrawRelationInterface(string class1Name, string class2Name, Dictionary<string, CaptionedShapeBase> shapeDictionary)
+        {
+            LineShapeBase line = (LineShapeBase)_NShapeProject.ShapeTypes["Polyline"].CreateInstance();
+            ThickArrow arrow = (ThickArrow)_NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
+
+            line.Connect(ControlPointId.FirstVertex, shapeDictionary[class1Name], ControlPointId.Reference);
+            line.Connect(ControlPointId.LastVertex, shapeDictionary[class2Name], ControlPointId.Reference);
+
+            ColorStyle myColorStyle = new ColorStyle("test", System.Drawing.Color.Green);
+            ColorStyle mySecondColorStyle = new ColorStyle("test", System.Drawing.Color.White);
+            FillStyle myFillStyle = new FillStyle("test", myColorStyle, mySecondColorStyle);
+            arrow.FillStyle = myFillStyle;
+
+            arrow.MoveControlPointTo(1, line.GetControlPointPosition(ControlPointId.FirstVertex).X,
+                                    line.GetControlPointPosition(ControlPointId.FirstVertex).Y, 0);
+            arrow.MoveControlPointTo(6, line.GetControlPointPosition(ControlPointId.LastVertex).X,
+                                    line.GetControlPointPosition(ControlPointId.LastVertex).Y, 0);
+
+            _NShapeDiagram.Shapes.Add(arrow);
+
+        }
+
+        public List<DescriptionClass> PutInterfaceInList(DllReader dll)
+        {
+            List<DescriptionClass> lDc = new List<DescriptionClass>();
+            foreach (DescriptionClass dc in DescriptionClass.PutTypeInList(dll))
+            {
+                if(dc._mainType.IsInterface)
+                    lDc.Add(dc);
+            }
+            return lDc;
+        }
+
+        public List<DescriptionClass> PutClassInList(DllReader dll)
+        {
+            List<DescriptionClass> lDc = new List<DescriptionClass>();
+            foreach (DescriptionClass dc in DescriptionClass.PutTypeInList(dll))
+            {
+                if (!dc._mainType.IsInterface)
+                    lDc.Add(dc);
+            }
+            return lDc;
+        }
     }
 }

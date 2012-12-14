@@ -47,12 +47,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dataweb.NShape, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c" />
+    <Reference Include="Dataweb.NShape">
+      <HintPath>lib\Dataweb.NShape.dll</HintPath>
+    </Reference>
     <Reference Include="Dataweb.NShape.GeneralShapes, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Dataweb.NShape.GeneralShapes.dll</HintPath>
     </Reference>
-    <Reference Include="Dataweb.NShape.WinFormsUI, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c, processorArchitecture=MSIL" />
+    <Reference Include="Dataweb.NShape.WinFormsUI">
+      <HintPath>lib\Dataweb.NShape.WinFormsUI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
