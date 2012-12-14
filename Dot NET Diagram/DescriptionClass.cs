@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Diagnostics;
 
 
 namespace Dot_NET_Diagram
@@ -38,50 +39,53 @@ namespace Dot_NET_Diagram
 
         public void printClass()
         {
-            Console.WriteLine("\nNom: {0}", _mainType.Name);
-            Console.WriteLine("\nListe des classes mères et interfaces: ");
+            Debug.WriteLine("Nom: {0}", _mainType.Name);
+            Debug.WriteLine("Liste des classes mères et interfaces: ");
             foreach (Type type in _subClasses)
-                Console.WriteLine(type.Name);
+                Debug.WriteLine(type.Name);
             if (_nestedClass.Count > 0)
             {
-                Console.WriteLine("\nClasse imbriqué: ");
+                Debug.WriteLine("\nClasse imbriqué: ");
                 foreach (Type type in _nestedClass)
-                    Console.WriteLine(type.Name);
+                    Debug.WriteLine(type.Name);
             }
-            Console.WriteLine("\nListe des membres: \n");
+            Debug.WriteLine("\nListe des membres: \n");
 
             //Recherche et affichage des "get" et "set" pour les propriétés
-            Console.WriteLine("   Propriété: \n");
+            Debug.WriteLine("   Propriété: \n");
             IEnumerable<MethodInfo> getOption;
             foreach (PropertyInfo pi in _property)
             {
-                Console.Write("\t" + pi.Name + " {");
+                Debug.Write("\t" + pi.Name + " {");
                 getOption = from mi in _mainType.GetMethods()
                             where mi.Name == "get_" + pi.Name
                             select mi;
                 if (getOption != null && getOption.ToList<MethodInfo>().Count > 0)
-                    Console.Write("get; ");
+                    Debug.Write("get; ");
                 getOption = null;
                 getOption = from mi in _mainType.GetMethods()
                             where mi.Name == "set_" + pi.Name
                             select mi;
                 if (getOption != null && getOption.ToList<MethodInfo>().Count > 0)
-                    Console.Write("set; ");
+                    Debug.Write("set; ");
                 getOption = null;
-                Console.WriteLine("}");
+                Debug.WriteLine("}");
             }
 
-            Console.WriteLine("   Champs: \n");
+            Debug.WriteLine("   Champs: \n");
+
             foreach (FieldInfo fi in _field)
             {
-                Console.WriteLine("\t" + fi.Name);
+                Debug.WriteLine( "\t" + fi.Name );
             }
 
-            Console.WriteLine("   Method: \n");
+            Debug.WriteLine("   Method: \n");
             foreach (MethodInfo mi in _method)
             {
-                Console.WriteLine("\t" + mi.Name);
+                Debug.WriteLine( "\t" + mi.Name );
             }
+
+            Debug.Flush();
         }
 
         //Triage de liste FieldInfo, enlève les attributs inutiles

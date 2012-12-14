@@ -11,6 +11,7 @@ using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 
 namespace Dot_NET_Diagram
@@ -190,15 +191,16 @@ namespace Dot_NET_Diagram
         {
             if ( !shapeDictionary.ContainsKey( class1Name ) )
             {
-                MainForm.LogOnDebug( "DrawRelation: Departing class missing from dictionary: " + class1Name );
+                Debug.WriteLine( "DrawRelation: Departing class missing from dictionary: " + class1Name );
                 return;
             }
             
             if( !shapeDictionary.ContainsKey( class2Name ) )
             {
-                MainForm.LogOnDebug( "DrawRelation: Arrival class missing from dictionary: " + class2Name );
+                Debug.WriteLine( "DrawRelation: Arrival class missing from dictionary: " + class2Name );
                 return;
             }
+            Debug.Flush();
 
             LineShapeBase line = (LineShapeBase) _NShapeProject.ShapeTypes["Polyline"].CreateInstance();
             ThickArrow arrow = (ThickArrow) _NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
