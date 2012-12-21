@@ -37,7 +37,10 @@
             this._statusBar = new System.Windows.Forms.StatusStrip();
             this._toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.drawRelationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._diagramDisplayControl = new Dot_NET_Diagram.DiagramDisplayControl();
+            this.drawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._menuBar.SuspendLayout();
             this._statusBar.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +48,8 @@
             // _menuBar
             // 
             this._menuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._fileToolStripMenuItem});
+            this._fileToolStripMenuItem,
+            this.drawRelationsToolStripMenuItem});
             this._menuBar.Location = new System.Drawing.Point(0, 0);
             this._menuBar.Name = "_menuBar";
             this._menuBar.Size = new System.Drawing.Size(784, 24);
@@ -101,6 +105,15 @@
             // 
             this._openFileDialog.Filter = ".NET Assemblies|*.dll;*.exe";
             // 
+            // drawRelationsToolStripMenuItem
+            // 
+            this.drawRelationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.drawToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.drawRelationsToolStripMenuItem.Name = "drawRelationsToolStripMenuItem";
+            this.drawRelationsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.drawRelationsToolStripMenuItem.Text = "Relations";
+            // 
             // _diagramDisplayControl
             // 
             this._diagramDisplayControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -110,6 +123,19 @@
             this._diagramDisplayControl.Size = new System.Drawing.Size(784, 516);
             this._diagramDisplayControl.TabIndex = 2;
             this._diagramDisplayControl.Load += new System.EventHandler(this._diagramDisplayControl_Load);
+            // 
+            // drawToolStripMenuItem
+            // 
+            this.drawToolStripMenuItem.Name = "drawToolStripMenuItem";
+            this.drawToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.drawToolStripMenuItem.Text = "Draw";
+            this.drawToolStripMenuItem.Click += new System.EventHandler(this.drawToolStripMenuItem_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // MainForm
             // 
@@ -142,6 +168,9 @@
         private System.Windows.Forms.ToolStripStatusLabel _toolStripStatusLabel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private DiagramDisplayControl _diagramDisplayControl;
+        private System.Windows.Forms.ToolStripMenuItem drawRelationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem drawToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
 
     }
 }

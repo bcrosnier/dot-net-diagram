@@ -11,7 +11,6 @@ using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
 using System.IO;
 using System.Reflection;
-using System.Diagnostics;
 
 
 namespace Dot_NET_Diagram
@@ -21,6 +20,7 @@ namespace Dot_NET_Diagram
     /// </summary>
     public partial class DiagramDisplayControl : UserControl
     {
+         Dictionary<String, CaptionedShapeBase> shapeDict = new Dictionary<String, CaptionedShapeBase>();
         private Dataweb.NShape.Diagram _NShapeDiagram;
 
         public DiagramDisplayControl()
@@ -53,19 +53,20 @@ namespace Dot_NET_Diagram
 
         public void loadAssembly( Assembly assembly )
         {
-/********************Algorithme de placement *********************************/
-            DllReader test = new DllReader( assembly.Location );
-            Dictionary<String, CaptionedShapeBase> shapeDict = new Dictionary<String, CaptionedShapeBase>();
-/**********Interfaces**************/
+            /********************Algorithme de placement *********************************/
+            DllReader test = new DllReader(assembly.Location);
+
+            /**********Interfaces**************/
             int x = 100;
             int y = 100;
+            int xCount;
 
             IEnumerable<DescriptionClass> requete = from dc in PutInterfaceInList(test)
                                                     orderby CountNbTimeCall(dc._mainType, test)
                                                     select dc;
             List<DescriptionClass> interfaceList = requete.ToList<DescriptionClass>();
-            int index=0;
-          
+            int index = 0;
+
             while (index != interfaceList.Count)
             {
                 if (interfaceList.ElementAt(index)._subClasses.Count == 0)
@@ -75,11 +76,11 @@ namespace Dot_NET_Diagram
                     index--;
                     x += 200;
                 }
-                
+
                 index++;
             }
             y += 400;
-            x=100;
+            x = 100;
             index = 0;
             while (index != interfaceList.Count)
             {
@@ -90,7 +91,7 @@ namespace Dot_NET_Diagram
                     index--;
                     x += 200;
                 }
-               
+
                 index++;
             }
             y -= 200;
@@ -105,18 +106,18 @@ namespace Dot_NET_Diagram
             foreach (DescriptionClass dc in PutInterfaceInList(test))
                 foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
                 {
-                    DrawRelationInterface(type.Name, dc.GetName(), shapeDict);
+                    DrawLineRelation(type.Name, dc.GetName(), shapeDict);
                 }
 
-/************Classes***********************/          
+            /************Classes***********************/
 
-            
+
 
             x = 0;
             y = 800;
-           requete = from dc in PutClassInList(test)
-                                                    orderby CountNbTimeCall(dc._mainType, test)
-                                                    select dc;
+            requete = from dc in PutClassInList(test)
+                      orderby CountNbTimeCall(dc._mainType, test)
+                      select dc;
             List<DescriptionClass> classList = requete.ToList<DescriptionClass>();
             index = 0;
 
@@ -125,6 +126,12 @@ namespace Dot_NET_Diagram
                 if (classList.ElementAt(index)._subClasses.Count == 0)
                 {
                     DrawClassShape(classList.ElementAt(index).GetName(), x, y, shapeDict);
+                    xCount = 0;
+                    foreach (Type type in classList.ElementAt(index)._nestedClass)
+                    {
+                        DrawNestedClassShape(type.Name, x + xCount, y - 200, shapeDict);
+                        xCount += 100;
+                    }
                     classList.RemoveAt(index);
                     index--;
                     x += 200;
@@ -159,9 +166,17 @@ namespace Dot_NET_Diagram
             foreach (DescriptionClass dc in PutClassInList(test))
                 foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
                 {
-                    DrawRelation(type.Name, dc.GetName(), shapeDict);
+                    if (type.IsInterface)
+                        DrawLineRelation(type.Name, dc.GetName(), shapeDict);
+                    else
+                        DrawLineRelation(type.Name, dc.GetName(), shapeDict);
                 }
-            
+
+            foreach (DescriptionClass dc in PutClassInList(test))
+                foreach (Type type in dc._nestedClass)
+                {
+                    DrawLineRelation(type.Name, dc.GetName(), shapeDict);
+                }
           
         }
 
@@ -202,7 +217,7 @@ namespace Dot_NET_Diagram
             shape.X = x;
             shape.Y = y;
             shape.SetCaptionText( 0, s );
-
+        
             _NShapeDiagram.Shapes.Add( shape );
             if ( !dShape.ContainsKey( s ) )
                 dShape.Add( s, shape );
@@ -220,23 +235,49 @@ namespace Dot_NET_Diagram
             FillStyle myFillStyle = new FillStyle( "test", myColorStyle, mySecondColorStyle );
             shape.FillStyle = myFillStyle;
             shape.SetCaptionText( 0, s );
-
+          
             _NShapeDiagram.Shapes.Add( shape );
-
             if ( !dShape.ContainsKey( s ) )
                 dShape.Add( s, shape );
         }
 
-        public void DrawMemberClass( string s, int x, int y )
+        public void DrawNestedClassShape(string s, int x, int y, Dictionary<String, CaptionedShapeBase> dShape)
         {
-            RectangleBase shape = (RectangleBase) _NShapeProject.ShapeTypes["Ellipse"].CreateInstance();
-            shape.Width = 100;
-            shape.Height = 50;
+            CircleBase shape = (CircleBase)_NShapeProject.ShapeTypes["Circle"].CreateInstance();
+            shape.Diameter = 100;
             shape.X = x;
             shape.Y = y;
-            shape.SetCaptionText( 0, s );
+            ColorStyle myColorStyle = new ColorStyle("test", System.Drawing.Color.Red);
+            ColorStyle mySecondColorStyle = new ColorStyle("test", System.Drawing.Color.White);
+            FillStyle myFillStyle = new FillStyle("test", myColorStyle, mySecondColorStyle);
+            shape.FillStyle = myFillStyle;
+            shape.SetCaptionText(0, s);
 
-            _NShapeDiagram.Shapes.Add( shape );
+            _NShapeDiagram.Shapes.Add(shape);
+            if (!dShape.ContainsKey(s))
+                dShape.Add(s, shape);
+        }
+
+        public void DrawLineRelation(string class1Name, string class2Name, Dictionary<string, CaptionedShapeBase> shapeDictionary)
+        {
+            if (!shapeDictionary.ContainsKey(class1Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Departing class missing from dictionary: " + class1Name);
+                return;
+            }
+
+            if (!shapeDictionary.ContainsKey(class2Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Arrival class missing from dictionary: " + class2Name);
+                return;
+            }
+
+            LineShapeBase line = (LineShapeBase)_NShapeProject.ShapeTypes["Polyline"].CreateInstance();
+
+            line.Connect(ControlPointId.FirstVertex, shapeDictionary[class1Name], ControlPointId.Reference);
+            line.Connect(ControlPointId.LastVertex, shapeDictionary[class2Name], ControlPointId.Reference);
+
+            _NShapeDiagram.Shapes.Add(line);
         }
 
         /// <summary>
@@ -249,16 +290,15 @@ namespace Dot_NET_Diagram
         {
             if ( !shapeDictionary.ContainsKey( class1Name ) )
             {
-                Debug.WriteLine( "DrawRelation: Departing class missing from dictionary: " + class1Name );
+                MainForm.LogOnDebug( "DrawRelation: Departing class missing from dictionary: " + class1Name );
                 return;
             }
             
             if( !shapeDictionary.ContainsKey( class2Name ) )
             {
-                Debug.WriteLine( "DrawRelation: Arrival class missing from dictionary: " + class2Name );
+                MainForm.LogOnDebug( "DrawRelation: Arrival class missing from dictionary: " + class2Name );
                 return;
             }
-            Debug.Flush();
 
             LineShapeBase line = (LineShapeBase) _NShapeProject.ShapeTypes["Polyline"].CreateInstance();
             ThickArrow arrow = (ThickArrow) _NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
@@ -276,6 +316,17 @@ namespace Dot_NET_Diagram
 
         public void DrawRelationNested(string class1Name, string class2Name, Dictionary<string, CaptionedShapeBase> shapeDictionary)
         {
+            if (!shapeDictionary.ContainsKey(class1Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Departing class missing from dictionary: " + class1Name);
+                return;
+            }
+
+            if (!shapeDictionary.ContainsKey(class2Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Arrival class missing from dictionary: " + class2Name);
+                return;
+            }
             LineShapeBase line = (LineShapeBase)_NShapeProject.ShapeTypes["Polyline"].CreateInstance();
             ThickArrow arrow = (ThickArrow)_NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
 
@@ -298,6 +349,17 @@ namespace Dot_NET_Diagram
 
         public void DrawRelationInterface(string class1Name, string class2Name, Dictionary<string, CaptionedShapeBase> shapeDictionary)
         {
+            if (!shapeDictionary.ContainsKey(class1Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Departing class missing from dictionary: " + class1Name);
+                return;
+            }
+
+            if (!shapeDictionary.ContainsKey(class2Name))
+            {
+                MainForm.LogOnDebug("DrawRelation: Arrival class missing from dictionary: " + class2Name);
+                return;
+            }
             LineShapeBase line = (LineShapeBase)_NShapeProject.ShapeTypes["Polyline"].CreateInstance();
             ThickArrow arrow = (ThickArrow)_NShapeProject.ShapeTypes["ThickArrow"].CreateInstance();
 
@@ -334,10 +396,39 @@ namespace Dot_NET_Diagram
             List<DescriptionClass> lDc = new List<DescriptionClass>();
             foreach (DescriptionClass dc in DescriptionClass.PutTypeInList(dll))
             {
-                if (!dc._mainType.IsInterface)
+                if (!dc._mainType.IsInterface && !dc._mainType.IsNested)
                     lDc.Add(dc);
             }
             return lDc;
         }
+
+        public void DrawAllRelation(DllReader dll)
+        {
+            foreach (DescriptionClass dc in DescriptionClass.PutTypeInList(dll))
+            {
+                if (dc._mainType.IsInterface)
+                    foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
+                    {
+                        DrawRelationInterface(type.Name, dc.GetName(), shapeDict);
+                    }
+            }
+            foreach (DescriptionClass dc in PutClassInList(dll))
+            {                  
+                    foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
+                    {
+                        if (type.IsInterface)
+                            DrawRelationInterface(type.Name, dc.GetName(), shapeDict);
+                        else
+                            DrawRelation(type.Name, dc.GetName(), shapeDict);
+                    }
+                    
+                    foreach (Type type in dc._nestedClass)
+                    {
+                        DrawRelationNested(type.Name, dc.GetName(), shapeDict);
+                    }
+            }
+        }
+
+
     }
 }

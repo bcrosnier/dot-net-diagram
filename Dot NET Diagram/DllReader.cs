@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using System.Diagnostics;
 
 namespace Dot_NET_Diagram
 {
@@ -26,8 +25,7 @@ namespace Dot_NET_Diagram
         /// <returns>Array with all types from assembly.</returns>
         public Type[] GetAllTypes()
         {
-            Debug.WriteLine( "Récupération des types: " );
-            Debug.Flush();
+            MainForm.LogOnDebug( "\nRécupération des types: " );
 
             Type[] typeAssembly = _currentDll.GetTypes();
 
@@ -41,8 +39,7 @@ namespace Dot_NET_Diagram
         /// <returns>Parent type(s) of type, can be empty.</returns>
         public List<Type> GetParentTypesOf( Type type )
         {
-            Debug.WriteLine( "Recherche de classe mère pour la classe " + type.Name );
-            Debug.Flush();
+            MainForm.LogOnDebug( String.Format( "Recherche de classe mère pour la classe {0}", type.Name ) );
 
             List<Type> parentTypes = new List<Type>();
 
@@ -63,8 +60,7 @@ namespace Dot_NET_Diagram
         /// <returns>List: interfaces implemented by type.</returns>
         public List<Type> GetInterfacesOf( Type type )
         {
-            Debug.WriteLine( "Récupération des interfaces de la classe " + type.Name );
-            Debug.Flush();
+            MainForm.LogOnDebug( String.Format( "\nRécupération des interfaces de la classe {0}", type.Name ) );
 
             return type.GetInterfaces().ToList<Type>();
         }

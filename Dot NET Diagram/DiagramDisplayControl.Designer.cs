@@ -38,6 +38,7 @@
             this._xmlStore = new Dataweb.NShape.XmlStore();
             this._propertyController = new Dataweb.NShape.Controllers.PropertyController();
             this._toolSetController = new Dataweb.NShape.Controllers.ToolSetController();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // _NShapeDisplay
@@ -121,5 +122,6 @@
         private Dataweb.NShape.XmlStore _xmlStore;
         private Dataweb.NShape.Controllers.PropertyController _propertyController;
         private Dataweb.NShape.Controllers.ToolSetController _toolSetController;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
