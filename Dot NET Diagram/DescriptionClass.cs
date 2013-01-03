@@ -19,7 +19,7 @@ namespace Dot_NET_Diagram
         public DescriptionClass(DllReader test, Type type)
         {
             _mainType = type;
-            _subClasses = SortListSubClass(test.GetSubClassAndI(_mainType), test);
+            _subClasses = SortListSubClass(test.GetParentsAndInterfaces(_mainType), test);
             _nestedClass = type.GetNestedTypes().ToList();
             _property = type.GetProperties().ToList();
             _field = SortListFi(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList());
@@ -144,7 +144,7 @@ namespace Dot_NET_Diagram
             List<Type> lIndex = new List<Type>();
             foreach (Type type in sClass)
             {
-                foreach (Type t in test.GetSubClassAndI(type))
+                foreach (Type t in test.GetParentsAndInterfaces(type))
                 {
                     if (sClass.Contains(t))
                         lIndex.Add(t);

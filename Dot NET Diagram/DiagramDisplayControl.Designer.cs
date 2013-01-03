@@ -36,6 +36,9 @@
             this._NShapeProject = new Dataweb.NShape.Project(this.components);
             this._CachedRepository = new Dataweb.NShape.Advanced.CachedRepository();
             this._xmlStore = new Dataweb.NShape.XmlStore();
+            this._propertyController = new Dataweb.NShape.Controllers.PropertyController();
+            this._toolSetController = new Dataweb.NShape.Controllers.ToolSetController();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // _NShapeDisplay
@@ -89,6 +92,15 @@
             this._xmlStore.FileExtension = ".xml";
             this._xmlStore.ProjectName = "";
             // 
+            // _propertyController
+            // 
+            this._propertyController.Project = this._NShapeProject;
+            this._propertyController.PropertyDisplayMode = Dataweb.NShape.Controllers.NonEditableDisplayMode.Default;
+            // 
+            // _toolSetController
+            // 
+            this._toolSetController.DiagramSetController = this._DiagramSetController;
+            // 
             // DiagramDisplayControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -108,5 +120,8 @@
         private Dataweb.NShape.Controllers.DiagramSetController _DiagramSetController;
         private Dataweb.NShape.Advanced.CachedRepository _CachedRepository;
         private Dataweb.NShape.XmlStore _xmlStore;
+        private Dataweb.NShape.Controllers.PropertyController _propertyController;
+        private Dataweb.NShape.Controllers.ToolSetController _toolSetController;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
