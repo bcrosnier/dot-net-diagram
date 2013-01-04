@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagramDisplayControl));
-            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager4 = new Dataweb.NShape.RoleBasedSecurityManager();
+            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager1 = new Dataweb.NShape.RoleBasedSecurityManager();
             this._DiagramSetController = new Dataweb.NShape.Controllers.DiagramSetController();
             this._NShapeProject = new Dataweb.NShape.Project(this.components);
             this._CachedRepository = new Dataweb.NShape.Advanced.CachedRepository();
@@ -57,9 +57,9 @@
             this._NShapeProject.LibrarySearchPaths = ((System.Collections.Generic.IList<string>)(resources.GetObject("_NShapeProject.LibrarySearchPaths")));
             this._NShapeProject.Name = null;
             this._NShapeProject.Repository = this._CachedRepository;
-            roleBasedSecurityManager4.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
-            roleBasedSecurityManager4.CurrentRoleName = "Administrator";
-            this._NShapeProject.SecurityManager = roleBasedSecurityManager4;
+            roleBasedSecurityManager1.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
+            roleBasedSecurityManager1.CurrentRoleName = "Administrator";
+            this._NShapeProject.SecurityManager = roleBasedSecurityManager1;
             // 
             // _CachedRepository
             // 
@@ -145,6 +145,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "DiagramDisplayControl";
             this.Size = new System.Drawing.Size(500, 500);
+            this.Load += new System.EventHandler(this.DiagramDisplayControl_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
