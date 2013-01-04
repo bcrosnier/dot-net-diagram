@@ -36,8 +36,8 @@ namespace Dot_NET_Diagram
             _NShapeProject.Create();
 
             _NShapeDiagram = new Diagram( "diagram" );
-            _NShapeDiagram.Height = _NShapeDisplay.Height;
-            _NShapeDiagram.Width = _NShapeDisplay.Width;
+            _NShapeDiagram.Height = _NShapeDisplay.Height+1000;
+            _NShapeDiagram.Width = _NShapeDisplay.Width+1000;
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
             textBox1.ReadOnly = true;
@@ -60,14 +60,14 @@ namespace Dot_NET_Diagram
 
         private void _NShapeDisplay_Layout( object sender, LayoutEventArgs e )
         {
-            _NShapeDiagram.Height = _NShapeDisplay.Height + 1000;
-            _NShapeDiagram.Width = _NShapeDisplay.Width + 1000;
+            _NShapeDiagram.Height = _NShapeDisplay.Height;
+            _NShapeDiagram.Width = _NShapeDisplay.Width;
         }
 
         public void loadAssembly( Assembly assembly )
         {
             /********************Algorithme de placement *********************************/
-            DllReader test = new DllReader(assembly.Location);
+            test = new DllReader(assembly.Location);
 
             /**********Interfaces**************/
             int x = 100;
@@ -486,8 +486,9 @@ namespace Dot_NET_Diagram
         private void _NShapeDisplay_ShapeClick(object sender, Dataweb.NShape.Controllers.DiagramPresenterShapeClickEventArgs e)
         {
             textBox1.Clear();
-            string searchName;
-            for (int i = 0; i < _shapeDict.Count; i++)
+            string searchName = string.Empty;
+            Type searchType = null;
+            for (int i = 0; i < shapeDict.Count; i++)
             {
                 if (_shapeDict.ElementAt(i).Value == e.Shape)
                 {
@@ -496,14 +497,30 @@ namespace Dot_NET_Diagram
                 }
             }
 
-
+            textBox1.AppendText(searchName + "\n");
+            foreach (Type type in test.GetAllTypes())
+            {              
+                if (type.Name == searchName)
+                {                  
+                    searchType = type;
+                    break;
+                }
+            }
+      
+            DescriptionClass dc = new DescriptionClass(test, searchType);
+            textBox1.AppendText("Propriétés: \n");
+            if(dc._property!=null)
+                foreach (PropertyInfo pi in dc._property)
+                    textBox1.AppendText("\t"+pi.Name + "\n");
+            textBox1.AppendText("Champs: \n");
+            if (dc._field != null)
+                foreach (FieldInfo fi in dc._field)
+                    textBox1.AppendText("\t" + fi.Name + "\n");
+            textBox1.AppendText("Methodes: \n");
+            if (dc._method != null)
+                foreach (MethodInfo mi in dc._method)
+                    textBox1.AppendText("\t" + mi.Name + "\n");
+            
         }
-
-        private void DiagramDisplayControl_Load( object sender, EventArgs e )
-        {
-        }
-
-
-
     }
 }
