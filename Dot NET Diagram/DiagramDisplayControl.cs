@@ -41,6 +41,21 @@ namespace Dot_NET_Diagram
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
             textBox1.ReadOnly = true;
+
+            // Init custom styles for shape FillStyles
+
+            ColorStyle greenColorStyle = new ColorStyle( "green", System.Drawing.Color.Green );
+            ColorStyle whiteColorStyle = new ColorStyle( "white", System.Drawing.Color.White );
+            ColorStyle yellowColorStyle = new ColorStyle( "yellow", System.Drawing.Color.Yellow );
+            ColorStyle redColorStyle = new ColorStyle( "red", System.Drawing.Color.Red );
+
+            FillStyle redWhiteFillStyle = new FillStyle( "red-white", redColorStyle, whiteColorStyle );
+            FillStyle greenWhiteFillStyle = new FillStyle( "green-white", greenColorStyle, whiteColorStyle );
+            FillStyle yellowWhiteFillStyle = new FillStyle( "yellow-white", yellowColorStyle, whiteColorStyle );
+
+            _NShapeProject.Design.FillStyles.Add( redWhiteFillStyle, redWhiteFillStyle );
+            _NShapeProject.Design.FillStyles.Add( greenWhiteFillStyle, greenWhiteFillStyle );
+            _NShapeProject.Design.FillStyles.Add( yellowWhiteFillStyle, yellowWhiteFillStyle );
         }
 
         private void _NShapeDisplay_Layout( object sender, LayoutEventArgs e )
@@ -235,11 +250,8 @@ namespace Dot_NET_Diagram
             shape.Y = y;
 
             shape.SetCaptionText( 0, s );
-           
-            ColorStyle myColorStyle = new ColorStyle("green", System.Drawing.Color.Green);
-            ColorStyle mySecondColorStyle = new ColorStyle( "white", System.Drawing.Color.White );
-            FillStyle myFillStyle = new FillStyle( "green-white", myColorStyle, mySecondColorStyle );
-            shape.FillStyle = myFillStyle;
+
+            shape.FillStyle = _NShapeProject.Design.FillStyles["green-white"];
 
             shape.SecurityDomainName = 'A';
 
@@ -258,10 +270,7 @@ namespace Dot_NET_Diagram
 
             shape.SetCaptionText( 0, s );
 
-            ColorStyle myColorStyle = new ColorStyle("red", System.Drawing.Color.Red);
-            ColorStyle mySecondColorStyle = new ColorStyle("white", System.Drawing.Color.White);
-            FillStyle myFillStyle = new FillStyle("red-white", myColorStyle, mySecondColorStyle);
-            shape.FillStyle = myFillStyle;
+            shape.FillStyle = _NShapeProject.Design.FillStyles["yellow-white"];
 
             shape.SecurityDomainName = 'A';
 
@@ -279,10 +288,8 @@ namespace Dot_NET_Diagram
             shape.Y = y;
             shape.SetCaptionText( 0, s );
 
-            ColorStyle myColorStyle = new ColorStyle("red", System.Drawing.Color.Yellow);
-            ColorStyle mySecondColorStyle = new ColorStyle("white", System.Drawing.Color.White);
-            FillStyle myFillStyle = new FillStyle("red-white", myColorStyle, mySecondColorStyle);
-            shape.FillStyle = myFillStyle;
+
+            shape.FillStyle = _NShapeProject.Design.FillStyles["red-white"];
 
             shape.SecurityDomainName = 'A';
 
@@ -374,10 +381,8 @@ namespace Dot_NET_Diagram
             line.Connect(ControlPointId.FirstVertex, shapeDictionary[class1Name], ControlPointId.Reference);
             line.Connect(ControlPointId.LastVertex, shapeDictionary[class2Name], ControlPointId.Reference);
 
-            ColorStyle myColorStyle = new ColorStyle("test", System.Drawing.Color.Red);
-            ColorStyle mySecondColorStyle = new ColorStyle("test", System.Drawing.Color.White);
-            FillStyle myFillStyle = new FillStyle("test", myColorStyle, mySecondColorStyle);
-            arrow.FillStyle = myFillStyle;
+            arrow.FillStyle = _NShapeProject.Design.FillStyles["red-white"];
+
 
             arrow.MoveControlPointTo(1, line.GetControlPointPosition(ControlPointId.FirstVertex).X,
                                     line.GetControlPointPosition(ControlPointId.FirstVertex).Y, 0);
@@ -408,10 +413,7 @@ namespace Dot_NET_Diagram
             line.Connect(ControlPointId.FirstVertex, shapeDictionary[class1Name], ControlPointId.Reference);
             line.Connect(ControlPointId.LastVertex, shapeDictionary[class2Name], ControlPointId.Reference);
 
-            ColorStyle myColorStyle = new ColorStyle("test", System.Drawing.Color.Green);
-            ColorStyle mySecondColorStyle = new ColorStyle("test", System.Drawing.Color.White);
-            FillStyle myFillStyle = new FillStyle("test", myColorStyle, mySecondColorStyle);
-            arrow.FillStyle = myFillStyle;
+            arrow.FillStyle = _NShapeProject.Design.FillStyles["green-white"];
 
             arrow.MoveControlPointTo(1, line.GetControlPointPosition(ControlPointId.FirstVertex).X,
                                     line.GetControlPointPosition(ControlPointId.FirstVertex).Y, 0);
