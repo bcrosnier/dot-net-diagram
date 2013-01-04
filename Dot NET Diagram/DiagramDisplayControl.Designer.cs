@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagramDisplayControl));
-            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager2 = new Dataweb.NShape.RoleBasedSecurityManager();
+            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager4 = new Dataweb.NShape.RoleBasedSecurityManager();
             this._DiagramSetController = new Dataweb.NShape.Controllers.DiagramSetController();
             this._NShapeProject = new Dataweb.NShape.Project(this.components);
             this._CachedRepository = new Dataweb.NShape.Advanced.CachedRepository();
@@ -57,9 +57,9 @@
             this._NShapeProject.LibrarySearchPaths = ((System.Collections.Generic.IList<string>)(resources.GetObject("_NShapeProject.LibrarySearchPaths")));
             this._NShapeProject.Name = null;
             this._NShapeProject.Repository = this._CachedRepository;
-            roleBasedSecurityManager2.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
-            roleBasedSecurityManager2.CurrentRoleName = "Administrator";
-            this._NShapeProject.SecurityManager = roleBasedSecurityManager2;
+            roleBasedSecurityManager4.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
+            roleBasedSecurityManager4.CurrentRoleName = "Administrator";
+            this._NShapeProject.SecurityManager = roleBasedSecurityManager4;
             // 
             // _CachedRepository
             // 
@@ -103,10 +103,12 @@
             // _NShapeDisplay
             // 
             this._NShapeDisplay.AllowDrop = true;
+            this._NShapeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._NShapeDisplay.BackColorGradient = System.Drawing.SystemColors.Control;
             this._NShapeDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._NShapeDisplay.DiagramSetController = this._DiagramSetController;
-            this._NShapeDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this._NShapeDisplay.GridColor = System.Drawing.Color.Gainsboro;
             this._NShapeDisplay.GridSize = 19;
             this._NShapeDisplay.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -126,7 +128,8 @@
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(3, 3);
             this.textBox1.Multiline = true;
