@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagramDisplayControl));
-            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager2 = new Dataweb.NShape.RoleBasedSecurityManager();
+            Dataweb.NShape.RoleBasedSecurityManager roleBasedSecurityManager1 = new Dataweb.NShape.RoleBasedSecurityManager();
             this._DiagramSetController = new Dataweb.NShape.Controllers.DiagramSetController();
             this._NShapeProject = new Dataweb.NShape.Project(this.components);
             this._CachedRepository = new Dataweb.NShape.Advanced.CachedRepository();
@@ -57,9 +57,9 @@
             this._NShapeProject.LibrarySearchPaths = ((System.Collections.Generic.IList<string>)(resources.GetObject("_NShapeProject.LibrarySearchPaths")));
             this._NShapeProject.Name = null;
             this._NShapeProject.Repository = this._CachedRepository;
-            roleBasedSecurityManager2.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
-            roleBasedSecurityManager2.CurrentRoleName = "Administrator";
-            this._NShapeProject.SecurityManager = roleBasedSecurityManager2;
+            roleBasedSecurityManager1.CurrentRole = Dataweb.NShape.StandardRole.Administrator;
+            roleBasedSecurityManager1.CurrentRoleName = "Administrator";
+            this._NShapeProject.SecurityManager = roleBasedSecurityManager1;
             // 
             // _CachedRepository
             // 
@@ -126,7 +126,8 @@
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(3, 3);
             this.textBox1.Multiline = true;

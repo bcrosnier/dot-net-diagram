@@ -20,6 +20,7 @@ namespace Dot_NET_Diagram
     /// </summary>
     public partial class DiagramDisplayControl : UserControl
     {
+        DllReader test = null;
         Dictionary<String, Shape> shapeDict = new Dictionary<String, Shape>();
         List<ThickArrow> arrowList = new List<ThickArrow>();
         private Dataweb.NShape.Diagram _NShapeDiagram;
@@ -36,8 +37,8 @@ namespace Dot_NET_Diagram
             _NShapeProject.Create();
 
             _NShapeDiagram = new Diagram( "diagram" );
-            _NShapeDiagram.Height = _NShapeDisplay.Height;
-            _NShapeDiagram.Width = _NShapeDisplay.Width;
+            _NShapeDiagram.Height = _NShapeDisplay.Height+1000;
+            _NShapeDiagram.Width = _NShapeDisplay.Width+1000;
 
             _NShapeDisplay.Diagram = _NShapeDiagram;
             textBox1.ReadOnly = true;
@@ -45,14 +46,14 @@ namespace Dot_NET_Diagram
 
         private void _NShapeDisplay_Layout( object sender, LayoutEventArgs e )
         {
-            _NShapeDiagram.Height = _NShapeDisplay.Height + 1000;
-            _NShapeDiagram.Width = _NShapeDisplay.Width + 1000;
+            _NShapeDiagram.Height = _NShapeDisplay.Height;
+            _NShapeDiagram.Width = _NShapeDisplay.Width;
         }
 
         public void loadAssembly( Assembly assembly )
         {
             /********************Algorithme de placement *********************************/
-            DllReader test = new DllReader(assembly.Location);
+            test = new DllReader(assembly.Location);
 
             /**********Interfaces**************/
             int x = 100;
@@ -260,9 +261,9 @@ namespace Dot_NET_Diagram
             shape.Diameter = 100;
             shape.X = x;
             shape.Y = y;
-            ColorStyle myColorStyle = new ColorStyle("red", System.Drawing.Color.Yellow);
+            ColorStyle myColorStyle = new ColorStyle("yellow", System.Drawing.Color.Yellow);
             ColorStyle mySecondColorStyle = new ColorStyle("white", System.Drawing.Color.White);
-            FillStyle myFillStyle = new FillStyle("red-white", myColorStyle, mySecondColorStyle);
+            FillStyle myFillStyle = new FillStyle("yellow-white", myColorStyle, mySecondColorStyle);
             shape.FillStyle = myFillStyle;
             shape.SetCaptionText(0, s);
             shape.SecurityDomainName = 'A';
@@ -457,7 +458,8 @@ namespace Dot_NET_Diagram
         private void _NShapeDisplay_ShapeClick(object sender, Dataweb.NShape.Controllers.DiagramPresenterShapeClickEventArgs e)
         {
             textBox1.Clear();
-            string searchName;
+            string searchName = string.Empty;
+            Type searchType = null;
             for (int i = 0; i < shapeDict.Count; i++)
             {
                 if (shapeDict.ElementAt(i).Value == e.Shape)
@@ -467,10 +469,30 @@ namespace Dot_NET_Diagram
                 }
             }
 
-
+            textBox1.AppendText(searchName + "\n");
+            foreach (Type type in test.GetAllTypes())
+            {              
+                if (type.Name == searchName)
+                {                  
+                    searchType = type;
+                    break;
+                }
+            }
+      
+            DescriptionClass dc = new DescriptionClass(test, searchType);
+            textBox1.AppendText("Propriétés: \n");
+            if(dc._property!=null)
+                foreach (PropertyInfo pi in dc._property)
+                    textBox1.AppendText("\t"+pi.Name + "\n");
+            textBox1.AppendText("Champs: \n");
+            if (dc._field != null)
+                foreach (FieldInfo fi in dc._field)
+                    textBox1.AppendText("\t" + fi.Name + "\n");
+            textBox1.AppendText("Methodes: \n");
+            if (dc._method != null)
+                foreach (MethodInfo mi in dc._method)
+                    textBox1.AppendText("\t" + mi.Name + "\n");
+            
         }
-
-
-
     }
 }

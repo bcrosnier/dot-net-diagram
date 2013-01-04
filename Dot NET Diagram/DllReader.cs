@@ -14,7 +14,7 @@ namespace Dot_NET_Diagram
         /// DLL reader instance. Loads assembly.
         /// </summary>
         /// <param name="assemblyFileName">Filename of assembly to load.</param>
-        public DllReader( string assemblyFileName )
+        public DllReader(string assemblyFileName )
         {
             _currentDll = Assembly.LoadFrom( assemblyFileName );
         }
