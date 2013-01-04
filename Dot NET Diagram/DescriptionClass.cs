@@ -20,7 +20,7 @@ namespace Dot_NET_Diagram
         {
             _mainType = type;
             _subClasses = SortListSubClass(test.GetParentsAndInterfaces(_mainType), test);
-            _nestedClass = type.GetNestedTypes().ToList();
+            _nestedClass = type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
             _property = type.GetProperties().ToList();
             _field = SortListFi(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList());
             _method = SortListMi(type.GetMethods().ToList());

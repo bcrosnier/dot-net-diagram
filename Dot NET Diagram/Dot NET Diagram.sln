@@ -1,9 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot NET Diagram", "Dot NET Diagram.csproj", "{AE737AB2-3A64-46B4-97FB-A65BB35FF38A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary", "..\TestClassLibrary\TestClassLibrary.csproj", "{94AA91E7-8C7B-401B-8270-C0F507516A52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		{AE737AB2-3A64-46B4-97FB-A65BB35FF38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE737AB2-3A64-46B4-97FB-A65BB35FF38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE737AB2-3A64-46B4-97FB-A65BB35FF38A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94AA91E7-8C7B-401B-8270-C0F507516A52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94AA91E7-8C7B-401B-8270-C0F507516A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94AA91E7-8C7B-401B-8270-C0F507516A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94AA91E7-8C7B-401B-8270-C0F507516A52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

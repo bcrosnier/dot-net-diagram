@@ -151,5 +151,10 @@ namespace Dot_NET_Diagram
             DllReader test = new DllReader(_loadedAssembly.Location);
             _diagramDisplayControl.DrawAllRelation(test);
         }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _diagramDisplayControl.RemoveAllRelation();
+        }
     }
 }

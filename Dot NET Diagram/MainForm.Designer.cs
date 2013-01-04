@@ -34,13 +34,13 @@
             this._openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawRelationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._statusBar = new System.Windows.Forms.StatusStrip();
             this._toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.drawRelationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._diagramDisplayControl = new Dot_NET_Diagram.DiagramDisplayControl();
-            this.drawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._menuBar.SuspendLayout();
             this._statusBar.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,29 @@
             this._exitToolStripMenuItem.Text = "E&xit";
             this._exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // drawRelationsToolStripMenuItem
+            // 
+            this.drawRelationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.drawToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.drawRelationsToolStripMenuItem.Name = "drawRelationsToolStripMenuItem";
+            this.drawRelationsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.drawRelationsToolStripMenuItem.Text = "Relations";
+            // 
+            // drawToolStripMenuItem
+            // 
+            this.drawToolStripMenuItem.Name = "drawToolStripMenuItem";
+            this.drawToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.drawToolStripMenuItem.Text = "Draw";
+            this.drawToolStripMenuItem.Click += new System.EventHandler(this.drawToolStripMenuItem_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // _statusBar
             // 
             this._statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -105,15 +128,6 @@
             // 
             this._openFileDialog.Filter = ".NET Assemblies|*.dll;*.exe";
             // 
-            // drawRelationsToolStripMenuItem
-            // 
-            this.drawRelationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawToolStripMenuItem,
-            this.removeToolStripMenuItem});
-            this.drawRelationsToolStripMenuItem.Name = "drawRelationsToolStripMenuItem";
-            this.drawRelationsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.drawRelationsToolStripMenuItem.Text = "Relations";
-            // 
             // _diagramDisplayControl
             // 
             this._diagramDisplayControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -123,19 +137,6 @@
             this._diagramDisplayControl.Size = new System.Drawing.Size(784, 516);
             this._diagramDisplayControl.TabIndex = 2;
             this._diagramDisplayControl.Load += new System.EventHandler(this._diagramDisplayControl_Load);
-            // 
-            // drawToolStripMenuItem
-            // 
-            this.drawToolStripMenuItem.Name = "drawToolStripMenuItem";
-            this.drawToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.drawToolStripMenuItem.Text = "Draw";
-            this.drawToolStripMenuItem.Click += new System.EventHandler(this.drawToolStripMenuItem_Click);
-            // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // MainForm
             // 
