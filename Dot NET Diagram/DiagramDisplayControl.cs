@@ -23,6 +23,7 @@ namespace Dot_NET_Diagram
         private Dictionary<String, Shape> _shapeDict = new Dictionary<String, Shape>();
         private List<ThickArrow> _arrowList = new List<ThickArrow>();
         private Dataweb.NShape.Diagram _NShapeDiagram;
+        private DllReader test;
 
         public DiagramDisplayControl()
         {
@@ -488,7 +489,7 @@ namespace Dot_NET_Diagram
             textBox1.Clear();
             string searchName = string.Empty;
             Type searchType = null;
-            for (int i = 0; i < shapeDict.Count; i++)
+            for (int i = 0; i < _shapeDict.Count; i++)
             {
                 if (_shapeDict.ElementAt(i).Value == e.Shape)
                 {

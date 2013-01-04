@@ -145,7 +145,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "DiagramDisplayControl";
             this.Size = new System.Drawing.Size(500, 500);
-            this.Load += new System.EventHandler(this.DiagramDisplayControl_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
