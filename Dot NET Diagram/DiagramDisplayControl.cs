@@ -12,19 +12,21 @@ using Dataweb.NShape.GeneralShapes;
 using System.IO;
 using System.Reflection;
 
-
 namespace Dot_NET_Diagram
 {
     /// <summary>
-    /// Diagram display user control. Handles the display of data. Uses NShape.
+    /// Diagram display user control. Contains all methods to create and display element shapes. Uses NShape.
     /// </summary>
     public partial class DiagramDisplayControl : UserControl
     {
         private Dictionary<String, Shape> _shapeDict = new Dictionary<String, Shape>();
         private List<ThickArrow> _arrowList = new List<ThickArrow>();
         private Dataweb.NShape.Diagram _NShapeDiagram;
-        private DllReader test;
+        private DllReader dllReader;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public DiagramDisplayControl()
         {
             InitializeComponent();
@@ -65,18 +67,22 @@ namespace Dot_NET_Diagram
             _NShapeDiagram.Width = _NShapeDisplay.Width;
         }
 
+        /// <summary>
+        /// Creates and displays all shapes from a given assembly.
+        /// </summary>
+        /// <param name="assembly">Assembly to load</param>
         public void loadAssembly( Assembly assembly )
         {
             /********************Algorithme de placement *********************************/
-            test = new DllReader(assembly.Location);
+            dllReader = new DllReader(assembly.Location);
 
             /**********Interfaces**************/
             int x = 100;
             int y = 100;
             int xCount;
         
-            IEnumerable<DescriptionClass> requete = from dc in PutInterfaceInList(test)
-                                                    orderby CountNbTimeCall(dc._mainType, test)
+            IEnumerable<DescriptionClass> requete = from dc in PutInterfaceInList(dllReader)
+                                                    orderby CountNbTimeCall(dc._mainType, dllReader)
                                                     select dc;
             List<DescriptionClass> interfaceList = requete.ToList<DescriptionClass>();
             int index = 0;
@@ -98,7 +104,7 @@ namespace Dot_NET_Diagram
             index = 0;
             while (index != interfaceList.Count)
             {
-                if (CountNbTimeCall(interfaceList.ElementAt(index)._mainType, test) == 0)
+                if (CountNbTimeCall(interfaceList.ElementAt(index)._mainType, dllReader) == 0)
                 {
                     DrawInterfaceShape(interfaceList.ElementAt(index).GetName(), x, y, _shapeDict);
                     interfaceList.RemoveAt(index);
@@ -116,7 +122,7 @@ namespace Dot_NET_Diagram
                 x += 200;
             }
 
-            foreach (DescriptionClass dc in PutInterfaceInList(test))
+            foreach (DescriptionClass dc in PutInterfaceInList(dllReader))
                 foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
                 {
                     DrawLineRelation(type.Name, dc.GetName(), _shapeDict);
@@ -126,8 +132,8 @@ namespace Dot_NET_Diagram
 
             x = 0;
             y = 800;
-            requete = from dc in PutClassInList(test)
-                      orderby CountNbTimeCall(dc._mainType, test)
+            requete = from dc in PutClassInList(dllReader)
+                      orderby CountNbTimeCall(dc._mainType, dllReader)
                       select dc;
             List<DescriptionClass> classList = requete.ToList<DescriptionClass>();
             index = 0;
@@ -158,7 +164,7 @@ namespace Dot_NET_Diagram
             index = 0;
             while (index != classList.Count)
             {
-                if (CountNbTimeCall(classList.ElementAt(index)._mainType, test) == 0)
+                if (CountNbTimeCall(classList.ElementAt(index)._mainType, dllReader) == 0)
                 {
                     if (classList.ElementAt(index)._mainType.IsValueType)
                         DrawStructShape(classList.ElementAt(index).GetName(), x, y, _shapeDict);
@@ -180,7 +186,7 @@ namespace Dot_NET_Diagram
                 x += 200;
             }
 
-            foreach (DescriptionClass dc in PutClassInList(test))
+            foreach (DescriptionClass dc in PutClassInList(dllReader))
                 foreach (Type type in dc.SortListType(dc._subClasses, dc._mainType))
                 {
                     if (type.IsInterface)
@@ -189,7 +195,7 @@ namespace Dot_NET_Diagram
                         DrawLineRelation(type.Name, dc.GetName(), _shapeDict);
                 }
 
-            foreach (DescriptionClass dc in PutClassInList(test))
+            foreach (DescriptionClass dc in PutClassInList(dllReader))
                 foreach (Type type in dc._nestedClass)
                 {
                     DrawLineRelation(type.Name, dc.GetName(), _shapeDict);
@@ -225,7 +231,16 @@ namespace Dot_NET_Diagram
             return counter;
         }
 
-        public void DrawClassShape( string s, int x, int y, Dictionary<String, Shape> dShape )
+        /// <summary>
+        /// Draws a circle shape containing a string at a given position and a given FillStyle, and insert it in the shape dictionary.
+        /// Used by DrawClassShape, DrawInterfaceShape, etc.
+        /// </summary>
+        /// <param name="contentString">String to display on the shape</param>
+        /// <param name="x">Horizontal position</param>
+        /// <param name="y">Vertical position</param>
+        /// <param name="shapeDict">Shape dictionary to edit</param>
+        /// <param name="fillStyle">FillStyle to use</param>
+        private void DrawElementShape( string contentString, int x, int y, Dictionary<String, Shape> shapeDict, FillStyle fillStyle = null )
         {
             CircleBase shape = (CircleBase) _NShapeProject.ShapeTypes["Circle"].CreateInstance();
 
@@ -233,70 +248,36 @@ namespace Dot_NET_Diagram
             shape.X = x;
             shape.Y = y;
 
-            shape.SetCaptionText( 0, s );
+            shape.SetCaptionText( 0, contentString );
 
-            shape.SecurityDomainName = 'A';
+            if( fillStyle != null )
+                shape.FillStyle = fillStyle;
+
+            shape.SecurityDomainName = 'A'; // User permissions
 
             _NShapeDiagram.Shapes.Add( shape );
-            if ( !dShape.ContainsKey( s ) )
-                dShape.Add( s, shape );
+            if ( !shapeDict.ContainsKey( contentString ) )
+                shapeDict.Add( contentString, shape );
+        }
+
+        public void DrawClassShape( string s, int x, int y, Dictionary<String, Shape> dShape )
+        {
+            DrawElementShape( s, x, y, dShape, null );
         }
 
         public void DrawInterfaceShape( string s, int x, int y, Dictionary<String, Shape> dShape )
         {
-            CircleBase shape = (CircleBase) _NShapeProject.ShapeTypes["Circle"].CreateInstance();
-
-            shape.Diameter = 100;
-            shape.X = x;
-            shape.Y = y;
-
-            shape.SetCaptionText( 0, s );
-
-            shape.FillStyle = _NShapeProject.Design.FillStyles["green-white"];
-
-            shape.SecurityDomainName = 'A';
-
-            _NShapeDiagram.Shapes.Add( shape );
-            if ( !dShape.ContainsKey( s ) )
-                dShape.Add( s, shape );
+            DrawElementShape( s, x, y, dShape, _NShapeProject.Design.FillStyles["green-white"] );
         }
 
         public void DrawNestedClassShape(string s, int x, int y, Dictionary<String, Shape> dShape)
         {
-            CircleBase shape = (CircleBase)_NShapeProject.ShapeTypes["Circle"].CreateInstance();
-
-            shape.Diameter = 100;
-            shape.X = x;
-            shape.Y = y;
-
-            shape.SetCaptionText( 0, s );
-
-            shape.FillStyle = _NShapeProject.Design.FillStyles["yellow-white"];
-
-            shape.SecurityDomainName = 'A';
-
-            _NShapeDiagram.Shapes.Add(shape);
-            if (!dShape.ContainsKey(s))
-                dShape.Add(s, shape);
+            DrawElementShape( s, x, y, dShape, _NShapeProject.Design.FillStyles["yellow-white"] );
         }
 
         public void DrawStructShape(string s, int x, int y, Dictionary<String, Shape> dShape)
         {
-            CircleBase shape = (CircleBase)_NShapeProject.ShapeTypes["Circle"].CreateInstance();
-
-            shape.Diameter = 100;
-            shape.X = x;
-            shape.Y = y;
-            shape.SetCaptionText( 0, s );
-
-
-            shape.FillStyle = _NShapeProject.Design.FillStyles["red-white"];
-
-            shape.SecurityDomainName = 'A';
-
-            _NShapeDiagram.Shapes.Add(shape);
-            if (!dShape.ContainsKey(s))
-                dShape.Add(s, shape);
+            DrawElementShape( s, x, y, dShape, _NShapeProject.Design.FillStyles["red-white"] );
         }
 
         /// <summary>
@@ -329,12 +310,12 @@ namespace Dot_NET_Diagram
         }
 
         /// <summary>
-        /// Draw a relation shape arrow and a line connection between two classes in the diagram, provided the class exists in given dictionary
+        /// Draw an arrow shape and a line connection between two classes in the diagram, provided the class exists in given dictionary
         /// </summary>
         /// <param name="class1Name">Class 1 name. (Departing)/</param>
         /// <param name="class2Name">Class 2 name. (Arrival)</param>
         /// <param name="shapeDictionary">Shape dictionary to use</param>
-        public void DrawRelation( string class1Name, string class2Name, Dictionary<string, Shape> shapeDictionary )
+        public void DrawShapeRelation( string class1Name, string class2Name, Dictionary<string, Shape> shapeDictionary )
         {
             if ( !shapeDictionary.ContainsKey( class1Name ) )
             {
@@ -465,7 +446,7 @@ namespace Dot_NET_Diagram
                         if (type.IsInterface)
                             DrawRelationInterface(type.Name, dc.GetName(), _shapeDict);
                         else
-                            DrawRelation(type.Name, dc.GetName(), _shapeDict);
+                            DrawShapeRelation(type.Name, dc.GetName(), _shapeDict);
                     }
                     
                     foreach (Type type in dc._nestedClass)
@@ -499,7 +480,7 @@ namespace Dot_NET_Diagram
             }
 
             textBox1.AppendText(searchName + "\n");
-            foreach (Type type in test.GetAllTypes())
+            foreach (Type type in dllReader.GetAllTypes())
             {              
                 if (type.Name == searchName)
                 {                  
@@ -508,7 +489,7 @@ namespace Dot_NET_Diagram
                 }
             }
       
-            DescriptionClass dc = new DescriptionClass(test, searchType);
+            DescriptionClass dc = new DescriptionClass(dllReader, searchType);
             textBox1.AppendText("Propriétés: \n");
             if(dc._property!=null)
                 foreach (PropertyInfo pi in dc._property)
